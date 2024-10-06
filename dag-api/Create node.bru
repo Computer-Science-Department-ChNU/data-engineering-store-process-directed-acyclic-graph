@@ -1,0 +1,22 @@
+meta {
+  name: Create node
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/author
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "J.R.R. Tolkien",
+    "books": [
+      "Lord of the Rings. Fellowship.",
+      "Lord of the Rings. Two towers.",
+      "Lord of the Rings. Return of the King."
+    ]
+  }
+}
