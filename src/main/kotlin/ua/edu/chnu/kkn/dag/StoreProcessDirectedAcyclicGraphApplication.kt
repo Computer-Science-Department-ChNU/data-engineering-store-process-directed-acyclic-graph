@@ -4,11 +4,15 @@ import org.folg.gedcom.model.Gedcom
 import org.folg.gedcom.model.GedcomTag
 import org.folg.gedcom.parser.ModelParser
 import org.folg.gedcom.parser.TreeParser
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.neo4j.config.EnableNeo4jAuditing
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories
 import org.springframework.util.ResourceUtils
+import ua.edu.chnu.kkn.dag.familytree.IndividualService
+import ua.edu.chnu.kkn.dag.familytree.IndividualServiceStaticProvider
+import ua.edu.chnu.kkn.dag.familytree.IndividualServiceStaticProvider.Companion.staticIndividualService
 
 
 @SpringBootApplication
@@ -16,20 +20,16 @@ import org.springframework.util.ResourceUtils
 @EnableNeo4jRepositories(basePackages = ["ua.edu.chnu.kkn.dag"])
 class StoreProcessDirectedAcyclicGraphApplication
 
+@Autowired
 fun main(args: Array<String>) {
+	runApplication<StoreProcessDirectedAcyclicGraphApplication>(*args)
 	val treeParser = TreeParser()
 	val gedcomFile = ResourceUtils.getFile("src/main/resources/ged/british_royal.ged")
-	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
+	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile).filter { it.tag != "SUBM" }
 	for (tag in gedcomTags) {
 		printAll(0, tag)
 	}
-	/*val modelParser = ModelParser()
-	val gedcomFile1 = ResourceUtils.getFile("src/main/resources/ged/british_royal.ged")
-	val gedcom: Gedcom = modelParser.parseGedcom(gedcomFile1)
-	for (person in gedcom.people) {
-		println(person.names[0].displayValue)
-	}*/
-	runApplication<StoreProcessDirectedAcyclicGraphApplication>(*args)
+	staticIndividualService?.saveAll(gedcomTags)
 }
 
 private fun printAll(level: Int, tag: GedcomTag) {
