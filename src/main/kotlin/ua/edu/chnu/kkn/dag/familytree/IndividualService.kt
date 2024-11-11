@@ -15,7 +15,32 @@ class IndividualService {
     }
 
     private fun gedComTagsToIndividual(gedComTags: List<GedcomTag>): List<Individual> {
-        //TODO Convert IND tags to Individual objects, fill in children list with Individuals based on FAM tag.
-        return emptyList()
+        val individuals = gedComTags
+            .asSequence()
+            .filter { it.isIndividual() }
+            .map(this::toIndividual)
+            .toList()
+        for (tag in gedComTags) {
+            if (tag.tag == "FAM") {
+                val tempFather = individuals.find { it.id == tag.children[0].ref && tag.children[0].tag == "HUSB" }
+                var tempMother : Individual? = null
+                if (tag.children[0].tag == "WIFE"){
+                    tempMother = individuals.find { it.id == tag.children[0].ref }
+                }
+                else if (tag.children.size > 1 && tag.children[1]?.tag == "WIFE") {
+                    tempMother = individuals.find { it.id == tag.children[1].ref }
+                }
+                for (tagFam in  tag.children ) {
+                    if (tagFam.tag == "CHIL") {
+                        val personParrenToAdd = individuals.find { it.id == tagFam.ref }
+                        personParrenToAdd?.father = tempFather
+                        personParrenToAdd?.mother = tempMother
+                    }
+                }
+            }
+        }
+        return individuals
     }
+
+    private fun toIndividual(tag: GedcomTag) = Individual(id = tag.id, name = tag.children[0].value)
 }

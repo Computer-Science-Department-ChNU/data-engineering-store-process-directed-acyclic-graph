@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 	runApplication<StoreProcessDirectedAcyclicGraphApplication>(*args)
 	val treeParser = TreeParser()
 	val gedcomFile = ResourceUtils.getFile("src/main/resources/ged/british_royal.ged")
-	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile).filter { it.tag != "SUBM" }
+	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
 	for (tag in gedcomTags) {
 		printAll(0, tag)
 	}

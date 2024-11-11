@@ -9,6 +9,8 @@ data class Individual(
     @Id
     val id: String,
     val name: String,
-    @Relationship(type = "DESCENDANTS")
-    val children: MutableList<Individual>
+    @Relationship(type = "FATHER", direction = Relationship.Direction.INCOMING)
+    var father: Individual? = null,
+    @Relationship(type = "MOTHER", direction = Relationship.Direction.INCOMING)
+    var mother: Individual? = null,
 )
