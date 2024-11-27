@@ -26,9 +26,6 @@ fun main(args: Array<String>) {
 	val treeParser = TreeParser()
 	val gedcomFile = ResourceUtils.getFile("src/main/resources/ged/british_royal.ged")
 	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
-	for (tag in gedcomTags) {
-		printAll(0, tag)
-	}
 	staticIndividualService?.saveAll(gedcomTags)
 }
 
