@@ -24,7 +24,7 @@ class StoreProcessDirectedAcyclicGraphApplication
 fun main(args: Array<String>) {
 	runApplication<StoreProcessDirectedAcyclicGraphApplication>(*args)
 	val treeParser = TreeParser()
-	val gedcomFile = ResourceUtils.getFile("src/main/resources/ged/british_royal.ged")
+	val gedcomFile = ResourceUtils.getFile("src/main/resources/ged/pres2020.ged")
 	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
 	staticIndividualService?.saveAll(gedcomTags)
 }

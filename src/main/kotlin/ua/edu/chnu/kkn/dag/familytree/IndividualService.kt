@@ -13,14 +13,28 @@ class IndividualService {
 
     @Transactional
     fun saveAll(gedComTags: List<GedcomTag>) {
-        individualRepository.saveAll(gedComTagsToIndividual(gedComTags))
+        saveIndividuals(gedComTags)
     }
 
-    private fun gedComTagsToIndividual(gedComTags: List<GedcomTag>): List<Individual> {
+    private fun saveIndividuals(gedComTags: List<GedcomTag>) {
+        println("------------Begin saveAll-------------")
         val individuals = gedComTags
             .filter { it.isIndividual() }
             .map(this::toIndividual)
             .sortedBy { it.id }
+        individualRepository.saveAll(individuals)
+
+        println("End saveAll")
+
+        saveIndividualRelationships(gedComTags, individuals)
+
+        println("End saveAll with connection")
+
+
+    }
+
+    private fun saveIndividualRelationships(gedComTags: List<GedcomTag>, individuals: List<Individual> ){
+        val individualsWithRelations = mutableListOf<Individual>()
         for (tag in gedComTags) {
             if (tag.tag == "FAM") {
                 val tempFather = individuals.find { it.realId == tag.children.getOrNull(0)?.ref && tag.children[0].tag == "HUSB" }
@@ -33,14 +47,19 @@ class IndividualService {
                 }
                 tag.children.filter { it.tag == "CHIL" }.forEach {childTag ->
                     val individ = individuals.find { it.realId == childTag.ref }
-                    individ?.father = tempFather
-                    individ?.mother = tempMother
+                    val individCopy = individ?.copy()
+
+                    individCopy?.father = tempFather
+                    individCopy?.mother = tempMother
+                    individCopy?.let { individualsWithRelations.add(it) }
+                    println("Save with connections ${individ?.id}" )
                 }
             }
         }
-        return individuals
-
+        individualRepository.saveAll(individualsWithRelations)
     }
+
+
 
     private fun toIndividual(tag: GedcomTag) = Individual(id = tag.id.replace("I", "").toInt(), realId = tag.id, name = tag.children[0].value)
 }
