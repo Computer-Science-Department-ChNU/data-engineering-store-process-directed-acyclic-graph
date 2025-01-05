@@ -38,21 +38,23 @@ class IndividualService {
             .forEach { tag ->
                 val father = tag.children
                     .filter { it.isHusband() }
-                    .firstNotNullOfOrNull { children ->
-                        individuals.find { it.realId == children.ref }
+                    .firstNotNullOfOrNull { husband ->
+                        individuals.find { it.realId == husband.ref }
                     }
                 val mother: IndividualNeo4jNode? = tag.children
                     .filter { it.isWife() }
-                    .firstNotNullOfOrNull { children ->
-                        individuals.find { it.realId == children.ref }
+                    .firstNotNullOfOrNull { wife ->
+                        individuals.find { it.realId == wife.ref }
                     }
-                tag.children.filter { it.isChild() }.forEach { childTag ->
-                    val individual = individuals.find { it.realId == childTag.ref }
-                    val individualCopy = individual?.copy()
-                    individualCopy?.father = father
-                    individualCopy?.mother = mother
-                    individualCopy?.let { individualsWithRelations.add(it) }
-                }
+                tag.children
+                    .filter { it.isChild() }
+                    .forEach { childTag ->
+                        val individual = individuals.find { it.realId == childTag.ref }
+                        val individualCopy = individual?.copy()
+                        individualCopy?.father = father
+                        individualCopy?.mother = mother
+                        individualCopy?.let { individualsWithRelations.add(it) }
+                    }
             }
         individualNeo4jRepository.saveAll(individualsWithRelations)
     }
