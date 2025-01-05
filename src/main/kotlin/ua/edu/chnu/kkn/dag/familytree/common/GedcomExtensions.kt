@@ -1,4 +1,4 @@
-package ua.edu.chnu.kkn.dag.familytree
+package ua.edu.chnu.kkn.dag.familytree.common
 
 import org.folg.gedcom.model.GedcomTag
 

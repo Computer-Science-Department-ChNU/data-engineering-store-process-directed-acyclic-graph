@@ -2,13 +2,36 @@ services:
   neo4j:
     image: neo4j:4.4.20-community
     ports:
-      - 7474:7474
-      - 7687:7687
+      - "7474:7474"
+      - "7687:7687"
     restart: unless-stopped
     environment:
-      - NEO4J_AUTH=neo4j/password
+      NEO4J_AUTH: neo4j/password
+      NEO4J_URI: bolt://neo4j:7687
     volumes:
       - ./db/data:/data
       - ./db/conf:/conf
       - ./db/logs:/logs
       - ./db/plugins:/plugins
+    networks:
+      - dag-network
+    healthcheck:
+      test: cypher-shell --username neo4j --password password 'MATCH (n) RETURN COUNT(n);'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  dag-app:
+    image: dag-app:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    networks:
+      - dag-network
+networks:
+  dag-network:
+    driver: bridge

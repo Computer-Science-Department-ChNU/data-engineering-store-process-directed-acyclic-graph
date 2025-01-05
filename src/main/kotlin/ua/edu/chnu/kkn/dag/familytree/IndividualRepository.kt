@@ -1,5 +1,0 @@
-package ua.edu.chnu.kkn.dag.familytree
-
-import org.springframework.data.neo4j.repository.Neo4jRepository
-
-interface IndividualRepository : Neo4jRepository<Individual, Int>
