@@ -11,3 +11,12 @@ fun GedcomTag.isHusband() = this.tag == "HUSB"
 fun GedcomTag.isWife() = this.tag == "WIFE"
 
 fun GedcomTag.isChild() = this.tag == "CHIL"
+
+fun GedcomTag.isBirthday() = this.tag == "BIRT"
+
+fun GedcomTag.isDeath() = this.tag == "DEAT"
+
+fun GedcomTag.isSex() = this.tag == "SEX"
+
+fun GedcomTag.isDate() = this.tag == "DATE"
+

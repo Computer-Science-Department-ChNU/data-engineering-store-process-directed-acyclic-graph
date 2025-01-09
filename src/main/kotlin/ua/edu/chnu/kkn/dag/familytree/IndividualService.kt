@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
-import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
+import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
 
 @Service
 class IndividualService {
@@ -63,6 +63,16 @@ class IndividualService {
         IndividualNeo4jNode(
             id = tag.id.replace("I", "").toInt(),
             realId = tag.id,
-            name = tag.children[0].value
+            name = tag.children[0].value,
+            sex = getSex(tag.children.find { it.isSex() }),
+            birthDate = tag.children
+                .find { it.isBirthday() }
+                ?.children?.find { it.isDate() }
+                ?.let { parseDate(it.value) },
+            deathDate = tag.children
+                .find { it.isDeath() }
+                ?.children?.find { it.isDate() }
+                ?.let { parseDate(it.value) },
         )
+
 }
