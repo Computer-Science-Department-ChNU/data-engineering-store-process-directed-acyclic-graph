@@ -49,7 +49,7 @@ class IndividualService {
         )
         individualNeo4jRepository.save(person)
         individualNeo4jRepository.save(person2)
-        individualNeo4jRepository.delete(person)// Deleting deletes all connections including in-out.
+        individualNeo4jRepository.delete(person)// Deleting deletes all node's connections including in-out.
         saveIndividualRelationships(gedComTags, individuals)
     }
 
