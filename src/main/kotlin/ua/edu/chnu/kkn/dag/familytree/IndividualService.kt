@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
+import ua.edu.chnu.kkn.dag.familytree.neo.Sex
+import java.time.LocalDate
 
 @Service
 class IndividualService {
@@ -25,6 +27,29 @@ class IndividualService {
             .map(this::toIndividual)
             .sortedBy { it.id }
         individualNeo4jRepository.saveAll(individuals)
+        val person = IndividualNeo4jNode(
+            id = 9999,
+            realId = "TESTER",
+            name = "Debuger",
+            sex = Sex.MALE,
+            birthDate = LocalDate.now(),
+            deathDate = LocalDate.now(),
+            father = individuals[0],
+            mother = individuals[1],
+        )
+        val person2 = IndividualNeo4jNode(
+            id = 9998,
+            realId = "TESTER",
+            name = "Debuger",
+            sex = Sex.MALE,
+            birthDate = LocalDate.now(),
+            deathDate = LocalDate.now(),
+            father = person,
+            mother = individuals[4],
+        )
+        individualNeo4jRepository.save(person)
+        individualNeo4jRepository.save(person2)
+        individualNeo4jRepository.delete(person)// Deleting deletes all connections including in-out.
         saveIndividualRelationships(gedComTags, individuals)
     }
 
