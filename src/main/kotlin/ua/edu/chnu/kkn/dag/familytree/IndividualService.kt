@@ -7,8 +7,6 @@ import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
-import ua.edu.chnu.kkn.dag.familytree.neo.Sex
-import java.time.LocalDate
 
 @Service
 class IndividualService {
@@ -27,29 +25,6 @@ class IndividualService {
             .map(this::toIndividual)
             .sortedBy { it.id }
         individualNeo4jRepository.saveAll(individuals)
-        val person = IndividualNeo4jNode(
-            id = 9999,
-            realId = "TESTER",
-            name = "Debuger",
-            sex = Sex.MALE,
-            birthDate = LocalDate.now(),
-            deathDate = LocalDate.now(),
-            father = individuals[0],
-            mother = individuals[1],
-        )
-        val person2 = IndividualNeo4jNode(
-            id = 9998,
-            realId = "TESTER",
-            name = "Debuger",
-            sex = Sex.MALE,
-            birthDate = LocalDate.now(),
-            deathDate = LocalDate.now(),
-            father = person,
-            mother = individuals[4],
-        )
-        individualNeo4jRepository.save(person)
-        individualNeo4jRepository.save(person2)
-        individualNeo4jRepository.delete(person)// Deleting deletes all node's connections including in-out.
         saveIndividualRelationships(gedComTags, individuals)
     }
 
@@ -64,17 +39,17 @@ class IndividualService {
                 val father = tag.children
                     .filter { it.isHusband() }
                     .firstNotNullOfOrNull { husband ->
-                        individuals.find { it.realId == husband.ref }
+                        individuals.find { it.id == husband.ref }
                     }
                 val mother: IndividualNeo4jNode? = tag.children
                     .filter { it.isWife() }
                     .firstNotNullOfOrNull { wife ->
-                        individuals.find { it.realId == wife.ref }
+                        individuals.find { it.id == wife.ref }
                     }
                 tag.children
                     .filter { it.isChild() }
                     .forEach { childTag ->
-                        val individual = individuals.find { it.realId == childTag.ref }
+                        val individual = individuals.find { it.id == childTag.ref }
                         val individualCopy = individual?.copy()
                         individualCopy?.father = father
                         individualCopy?.mother = mother
@@ -86,8 +61,7 @@ class IndividualService {
 
     private fun toIndividual(tag: GedcomTag) =
         IndividualNeo4jNode(
-            id = tag.id.replace("I", "").toInt(),
-            realId = tag.id,
+            id = tag.id,
             name = tag.children[0].value,
             sex = getSex(tag.children.find { it.isSex() }),
             birthDate = tag.children

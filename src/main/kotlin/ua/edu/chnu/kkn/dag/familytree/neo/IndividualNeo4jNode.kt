@@ -8,8 +8,7 @@ import java.time.LocalDate
 @Node("Individual")
 data class IndividualNeo4jNode(
     @Id
-    val id: Int,
-    val realId: String,
+    val id: String,
     val name: String,
     val sex: Sex,
     val birthDate: LocalDate?,

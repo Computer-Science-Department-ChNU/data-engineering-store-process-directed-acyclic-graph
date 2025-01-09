@@ -37,7 +37,8 @@ fun getSex(tag: GedcomTag?): Sex {
 }
 
 fun parseDate(date: String): LocalDate? {
-    val cleanData = if (date.hasAbbreviation()) date.substring(3).trim()
+    val abbreviationLength = 3
+    val cleanData = if (date.hasAbbreviation()) date.substring(abbreviationLength).trim()
     else if (date.contains('/')) date.split('/')[0].trim()
     else date.trim()
 
@@ -55,6 +56,10 @@ fun parseDate(date: String): LocalDate? {
     }
 }
 
-fun String.hasAbbreviation() = this.startsWith("ABT")
-        || this.startsWith("AFT")
-        || this.startsWith("BEF")
+val abbreviations: List<String> = listOf(
+    "AFT",
+    "BEF",
+    "ABT"
+)
+
+fun String.hasAbbreviation() = abbreviations.any() {this.startsWith(it)}
