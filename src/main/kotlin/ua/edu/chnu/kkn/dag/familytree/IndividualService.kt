@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
+import ua.edu.chnu.kkn.dag.familytree.neo.Sex
 
 @Service
 class IndividualService {
@@ -63,7 +64,7 @@ class IndividualService {
         IndividualNeo4jNode(
             id = tag.id,
             name = tag.children[0].value,
-            sex = getSex(tag.children.find { it.isSex() }),
+            sex = tag.children.find { it.isSex() }?.getSex() ?: Sex.UNDEFINED,
             birthDate = tag.children
                 .find { it.isBirthday() }
                 ?.children?.find { it.isDate() }

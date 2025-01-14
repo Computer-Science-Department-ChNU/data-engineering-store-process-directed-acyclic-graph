@@ -1,6 +1,7 @@
 package ua.edu.chnu.kkn.dag.familytree.common
 
 import org.folg.gedcom.model.GedcomTag
+import ua.edu.chnu.kkn.dag.familytree.neo.Sex
 
 fun GedcomTag.isIndividual() = this.tag == "INDI"
 
@@ -20,3 +21,10 @@ fun GedcomTag.isSex() = this.tag == "SEX"
 
 fun GedcomTag.isDate() = this.tag == "DATE"
 
+fun GedcomTag.getSex(): Sex {
+    return when (this.value) {
+        "M" -> Sex.MALE
+        "F" -> Sex.FEMALE
+        else -> Sex.UNDEFINED
+    }
+}

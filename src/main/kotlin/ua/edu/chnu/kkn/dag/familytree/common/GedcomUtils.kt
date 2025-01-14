@@ -28,17 +28,9 @@ fun printAllGedcomTags(level: Int, tag: GedcomTag) {
     }
 }
 
-fun getSex(tag: GedcomTag?): Sex {
-    return when (tag?.value) {
-        "M" -> Sex.MALE
-        "F" -> Sex.FEMALE
-        else -> Sex.UNDEFINED
-    }
-}
-
 fun parseDate(date: String): LocalDate? {
-    val abbreviationLength = 3
-    val cleanData = if (date.hasAbbreviation()) date.substring(abbreviationLength).trim()
+    val dateAbbreviationEndPosition = 3
+    val cleanData = if (date.hasDateAbbreviation()) date.substring(dateAbbreviationEndPosition).trim()
     else if (date.contains('/')) date.split('/')[0].trim()
     else date.trim()
 
@@ -50,8 +42,8 @@ fun parseDate(date: String): LocalDate? {
 
     return when (val parsedDate = parser.parseBest(cleanData, LocalDate::from, YearMonth::from, Year::from)) {
         is LocalDate -> parsedDate
-        is YearMonth -> parsedDate.atDay(12)
-        is Year -> parsedDate.atMonthDay(MonthDay.of(6, 12))
+        is YearMonth -> parsedDate.atDay(1)
+        is Year -> parsedDate.atMonthDay(MonthDay.of(1, 1))
         else -> null
     }
 }
@@ -62,4 +54,4 @@ val abbreviations: List<String> = listOf(
     "ABT"
 )
 
-fun String.hasAbbreviation() = abbreviations.any() {this.startsWith(it)}
+fun String.hasDateAbbreviation() = abbreviations.any() {this.startsWith(it)}
