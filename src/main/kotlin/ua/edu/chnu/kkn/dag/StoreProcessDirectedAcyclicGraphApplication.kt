@@ -23,4 +23,5 @@ fun main(args: Array<String>) {
 	val gedcomFile = ResourceUtils.getFile("pres2020.ged")
 	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
 	staticIndividualService?.saveAll(gedcomTags)
+
 }
