@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.neo4j.config.EnableNeo4jAuditing
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.util.ResourceUtils
 import ua.edu.chnu.kkn.dag.familytree.IndividualServiceStaticProvider.Companion.staticIndividualService
 
@@ -14,6 +15,7 @@ import ua.edu.chnu.kkn.dag.familytree.IndividualServiceStaticProvider.Companion.
 @SpringBootApplication
 @EnableNeo4jAuditing
 @EnableNeo4jRepositories(basePackages = ["ua.edu.chnu.kkn.dag.familytree.neo"])
+@EnableTransactionManagement
 class StoreProcessDirectedAcyclicGraphApplication
 
 @Autowired

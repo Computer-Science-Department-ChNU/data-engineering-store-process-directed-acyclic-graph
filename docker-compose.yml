@@ -20,6 +20,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+  postgres:
+    image: 'postgres:16'
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: dag-storage
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    networks:
+      - dag-network
   dag-app:
     image: dag-app:0.0.1
     build:
