@@ -1,7 +1,6 @@
 package ua.edu.chnu.kkn.dag.familytree.common
 
 import org.folg.gedcom.model.GedcomTag
-import ua.edu.chnu.kkn.dag.familytree.neo.Sex
 import java.time.LocalDate
 import java.time.MonthDay
 import java.time.Year

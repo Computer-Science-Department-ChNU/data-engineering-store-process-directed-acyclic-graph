@@ -9,4 +9,6 @@ WORKDIR /app
 EXPOSE 8080
 COPY --from=builder /app/build/libs/dag-0.0.1.jar .
 COPY /src/main/resources/ged/** .
-CMD ["java", "-jar", "dag-0.0.1.jar"]
+
+EXPOSE 5005
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "dag-0.0.1.jar"]

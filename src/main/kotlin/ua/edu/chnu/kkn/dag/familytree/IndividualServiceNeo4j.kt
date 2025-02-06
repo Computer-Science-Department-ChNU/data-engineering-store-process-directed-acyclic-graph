@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
 import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
-import ua.edu.chnu.kkn.dag.familytree.neo.Sex
+import ua.edu.chnu.kkn.dag.familytree.common.Sex
 
 @Service
-class IndividualService {
+class IndividualServiceNeo4j {
 
     @Autowired
     lateinit var individualNeo4jRepository: IndividualNeo4jRepository

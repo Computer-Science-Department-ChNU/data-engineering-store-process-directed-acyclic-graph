@@ -1,32 +1,25 @@
 package ua.edu.chnu.kkn.dag.familytree.sql
 
-import jakarta.persistence.Embeddable
-import jakarta.persistence.EmbeddedId
-import jakarta.persistence.Entity
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.MapsId
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "connections")
 data class ConnectionEntity(
-    @EmbeddedId
-    val id: ConnectionCompositeKey,
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id : Long? = null,
 
     @ManyToOne
-    @MapsId("child")
-    @JoinColumn(name = "child", referencedColumnName = "id")
+    @JoinColumn(name = "child", referencedColumnName = "user_id")
     val child: IndividualEntity,
 
     @ManyToOne
-    @MapsId("father")
-    @JoinColumn(name = "father", referencedColumnName = "id")
-    val father: IndividualEntity,
+    @JoinColumn(name = "father", referencedColumnName = "user_id", nullable = true)
+    val father: IndividualEntity?,
 
     @ManyToOne
-    @MapsId("mother")
-    @JoinColumn(name = "mother", referencedColumnName = "id")
-    val mother: IndividualEntity
+    @JoinColumn(name = "mother", referencedColumnName = "user_id", nullable = true)
+    val mother: IndividualEntity?
 
 )

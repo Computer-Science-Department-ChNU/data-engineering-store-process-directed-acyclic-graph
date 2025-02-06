@@ -38,6 +38,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+      - "5005:5005"
     environment:
       NEO4J_URI: bolt://neo4j:7687
     depends_on:

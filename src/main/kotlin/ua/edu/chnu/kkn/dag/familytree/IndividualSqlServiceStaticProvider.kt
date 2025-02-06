@@ -5,17 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class IndividualServiceStaticProvider {
+class IndividualSqlServiceStaticProvider {
 
     companion object {
-        var staticIndividualService: IndividualService? = null
+        var staticIndividualSqlService: IndividualServiceSql? = null
     }
 
     @Autowired
-    lateinit var individualService: IndividualService
+    lateinit var individualServiceSql: IndividualServiceSql
 
     @PostConstruct
     fun init() {
-        staticIndividualService = individualService
+        staticIndividualSqlService = individualServiceSql
     }
 }
