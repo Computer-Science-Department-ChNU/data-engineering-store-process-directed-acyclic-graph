@@ -8,7 +8,8 @@ import java.time.LocalDate
 @Table(name = "individuals")
 data class IndividualEntity(
     @Id
-    val user_id: String,
+    @Column(name = "user_id")
+    val id: String,
     val name: String,
     @Column(columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)

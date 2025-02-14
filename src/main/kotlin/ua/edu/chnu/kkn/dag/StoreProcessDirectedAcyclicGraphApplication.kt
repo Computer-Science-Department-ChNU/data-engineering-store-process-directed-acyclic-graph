@@ -9,9 +9,8 @@ import org.springframework.data.neo4j.config.EnableNeo4jAuditing
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.util.ResourceUtils
-import ua.edu.chnu.kkn.dag.familytree.IndividualNeo4jServiceStaticProvider.Companion.staticIndividualServiceNeo4j
+import ua.edu.chnu.kkn.dag.familytree.IndividualNeo4jServiceStaticProvider.Companion.staticIndividualNeo4jService
 import ua.edu.chnu.kkn.dag.familytree.IndividualSqlServiceStaticProvider.Companion.staticIndividualSqlService
-import ua.edu.chnu.kkn.dag.familytree.ConnectionSqlServiceStaticProvider.Companion.staticConnectionSqlProvider
 
 @SpringBootApplication
 @EnableNeo4jAuditing
@@ -25,8 +24,7 @@ fun main(args: Array<String>) {
 	val treeParser = TreeParser()
 	val gedcomFile = ResourceUtils.getFile("pres2020.ged")
 	val gedcomTags: List<GedcomTag> = treeParser.parseGedcom(gedcomFile)
-	staticIndividualServiceNeo4j?.saveAll(gedcomTags)
+	staticIndividualNeo4jService?.saveAll(gedcomTags)
 	staticIndividualSqlService?.saveAll(gedcomTags)
-	staticConnectionSqlProvider?.saveAll(gedcomTags)
 
 }

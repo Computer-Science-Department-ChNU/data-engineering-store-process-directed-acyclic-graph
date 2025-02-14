@@ -1,16 +1,14 @@
-package ua.edu.chnu.kkn.dag.familytree
+package ua.edu.chnu.kkn.dag.familytree.neo
 
 import org.folg.gedcom.model.GedcomTag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ua.edu.chnu.kkn.dag.familytree.common.*
-import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jNode
-import ua.edu.chnu.kkn.dag.familytree.neo.IndividualNeo4jRepository
 import ua.edu.chnu.kkn.dag.familytree.common.Sex
 
 @Service
-class IndividualServiceNeo4j {
+class IndividualNeo4jService {
 
     @Autowired
     lateinit var individualNeo4jRepository: IndividualNeo4jRepository
